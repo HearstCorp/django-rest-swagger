@@ -1352,9 +1352,9 @@ class BaseMethodIntrospectorTest(TestCase, DocumentationGeneratorMixin):
         self.assertEqual("string", properties["decimal"]["type"])
         self.assertEqual("string", properties["file"]["type"])
         self.assertEqual("string", properties["image"]["type"])
-        self.assertEqual("string", properties["joop"]["type"])
+        self.assertEqual("field", properties["joop"]["type"])
         self.assertEqual("array", properties["many_related"]["type"])
-        self.assertEqual("string", properties["many_related"]["items"]["type"])
+        self.assertEqual("field", properties["many_related"]["items"]["type"])
         self.assertEqual("string", properties["single_related"]["type"])
 
     def test_build_form_parameters_allowable_values(self):

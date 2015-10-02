@@ -487,7 +487,7 @@ class BaseMethodIntrospector(object):
 
 def get_data_type(field):
     # (in swagger 2.0 we might get to use the descriptive types..
-    from rest_framework import fields
+    from rest_framework import fields, relations
     if isinstance(field, fields.BooleanField):
         return 'boolean', 'boolean'
     elif hasattr(fields, 'NullBooleanField') and isinstance(field, fields.NullBooleanField):
@@ -520,6 +520,8 @@ def get_data_type(field):
         # return 'string', 'string' # 'file upload'
     # elif isinstance(field, fields.CharField):
         # return 'string', 'string'
+    elif isinstance(field, relations.PrimaryKeyRelatedField):
+        return 'field', 'field'
     elif rest_framework.VERSION >= '3.0.0' and isinstance(field, fields.HiddenField):
         return 'hidden', 'hidden'
     else:
