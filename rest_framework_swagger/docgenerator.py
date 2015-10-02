@@ -1,7 +1,7 @@
 """Generates API documentation by introspection."""
 from django.contrib.auth.models import AnonymousUser
 import rest_framework
-from rest_framework import viewsets
+from rest_framework import relations, viewsets
 from rest_framework.serializers import BaseSerializer
 
 from .introspectors import (
@@ -357,6 +357,10 @@ class DocumentationGenerator(object):
                         field_serializer = "Write{}".format(field_serializer)
 
                     f['type'] = field_serializer
+                elif isinstance(field, (relations.ManyRelatedField,
+                                        relations.PrimaryKeyRelatedField)):
+                    field_serializer = None
+                    data_type = 'field'
                 else:
                     field_serializer = None
                     data_type = 'string'
@@ -365,7 +369,7 @@ class DocumentationGenerator(object):
                     f['type'] = 'array'
                     if field_serializer:
                         f['items'] = {'$ref': field_serializer}
-                    elif data_type in BaseMethodIntrospector.PRIMITIVES:
+                    else:
                         f['items'] = {'type': data_type}
 
             # memorize discovered field
